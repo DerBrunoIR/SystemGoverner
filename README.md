@@ -5,7 +5,7 @@ Included are:
 
 - `State` Base class for idempotent state changes on the system
 
-    This interface is used by most other utils:
+    This interface is used by all other utils:
     ```python
     class State(ABC):
         def install(self) -> None:
@@ -29,17 +29,18 @@ Included are:
             pass
     ```
     
-The following classes encapsulate other states.
+
+The following classes **encapsulate** other states.
 
 - `Chain`: chain multiple states together.
 - `Try`: Ignore exceptions from encapsulated state. 
 - `Invert`: Swap `install` and `uninstall` method.
 - `From`: Temporally install dependency state to install target state.
 - `Breakpoint`: Enters a breakpoint before accessing encapsulated state.
-
 - `Print`: just prints a message, has no encapsulated state.
 
-The following classes are useful for changing state on Ubuntu systems:
+
+The following classes are useful for **changing** Ubuntu systems:
 
 - `Command`: A state described by shell commands for installation, uninstallation and detection.
 - `Dpkg`: State to install Debian packages from an archive.
@@ -51,8 +52,8 @@ The following classes are useful for changing state on Ubuntu systems:
 - `AddAptRepository`: State for adding apt repositories.
 - `AddFlatpakRemote`: State for adding flatpak remotes.
 
-- `Runnable`: Interface for runnable things.
-- `Shell`: Run a shell command.
+- `Runnable`: Interface for something that can be `run`.
+- `Shell`: Class for running shell commands.
 
 
 # Example Usage
