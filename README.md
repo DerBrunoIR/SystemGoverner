@@ -7,6 +7,7 @@ But the intended use is only the configuration of my Ubuntu system.
 
 # Example Usage
 
+`example.py`:
 ```python
 # to be executed in root dir of the repo, otherwise imports break
 from lib import *
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     ).ensure_installed()
 ```
 
-output, if everything is already installed:
+log of the previous program 
 
 ```bash
 # install discord via flathub
