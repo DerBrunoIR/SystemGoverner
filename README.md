@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 log of the previous program 
 
-```bash
+```plain
 # install discord via flathub
 user@~ dpkg --status 'flatpak'
 user@~ flatpak remotes --columns=name,options | grep 'flathub.*user'
