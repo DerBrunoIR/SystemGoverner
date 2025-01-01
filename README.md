@@ -1,6 +1,50 @@
 This python library contains utils to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion.
 Those utils are easy to extend and modify for your needs.
 
+
+# Example Usage
+
+```python
+    # tobe executed in root dir of the repo
+    from lib import *
+    from unix import *
+
+    if __name__ == '__main__':
+        Chain(
+            Print('# install discord'),
+            Chain(
+                Apt('flatpak'),
+                AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
+                Flatpak('com.discordapp.Discord'),
+            ),
+
+            Print("# setup nvim"),
+            Chain(
+                Print("## install nvim"),
+                Command(
+                    install=Shell('sudo wget https://github.com/neovim/neovim/releases/download/v0.10.3/nvim.appimage -O /usr/local/bin/nvim'),
+                    uninstall=Shell('sudo rm /usr/local/bin/nvim'),
+                    detect=Shell('test -f /usr/local/bin/nvim'),
+                    ),
+                Print("## clone nvim configuration"),
+                GitClone('git@github.com:DerBrunoIR/NeoVimConfig.git', '~/.config/nvim'),
+            ),
+
+            Print("# install pandoc"),
+            From(
+                Command(
+                    Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
+                    Shell('rm /tmp/pandoc.deb'),
+                    Shell('test -f /tmp/pandoc.deb'),
+                ),
+                Dpkg('pandoc', '/tmp/pandoc.deb'),
+            ),
+        ).ensure_installed()
+```
+
+A large example can be found in `./my_ubuntu.py`.
+
+
 # Documentation
 
 - `State` Base class for idempotent state changes on the system
@@ -55,45 +99,3 @@ The following classes are useful for **changing** Ubuntu systems:
 - `Runnable`: Interface for something that can be `run`.
 - `Shell`: Class for running shell commands.
 
-
-# Example Usage
-
-```python
-    # tobe executed in root dir of the repo
-    from lib import *
-    from unix import *
-
-    if __name__ == '__main__':
-        Chain(
-            Print('# install discord'),
-            Chain(
-                Apt('flatpak'),
-                AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
-                Flatpak('com.discordapp.Discord'),
-            ),
-
-            Print("# setup nvim"),
-            Chain(
-                Print("## install nvim"),
-                Command(
-                    install=Shell('sudo wget https://github.com/neovim/neovim/releases/download/v0.10.3/nvim.appimage -O /usr/local/bin/nvim'),
-                    uninstall=Shell('sudo rm /usr/local/bin/nvim'),
-                    detect=Shell('test -f /usr/local/bin/nvim'),
-                    ),
-                Print("## clone nvim configuration"),
-                GitClone('git@github.com:DerBrunoIR/NeoVimConfig.git', '~/.config/nvim'),
-            ),
-
-            Print("# install pandoc"),
-            From(
-                Command(
-                    Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
-                    Shell('rm /tmp/pandoc.deb'),
-                    Shell('test -f /tmp/pandoc.deb'),
-                ),
-                Dpkg('pandoc', '/tmp/pandoc.deb'),
-            ),
-        ).ensure_installed()
-```
-
-A large example can be found in `./my_ubuntu.py`.
