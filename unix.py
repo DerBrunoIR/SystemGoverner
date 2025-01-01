@@ -82,7 +82,7 @@ class Shell(Runnable):
 
         cwd = cwd if cwd else os.getcwd()
 
-        print(f"{AnsiColor.GREEN}{user}{AnsiColor.LIGHT_CYAN}{cwd}{AnsiColor.END} {cmd}")
+        print(f"{AnsiColor.GREEN}{user}{AnsiColor.END}@{AnsiColor.LIGHT_CYAN}{cwd}{AnsiColor.END} {cmd}")
         return subprocess.run(
                 cmd,
                 capture_output=True, 

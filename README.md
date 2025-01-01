@@ -8,45 +8,46 @@ But the intended use is only the configuration of my Ubuntu system.
 # Example Usage
 
 ```python
-    # to be executed in root dir of the repo, otherwise imports break
-    from lib import *
-    from unix import *
+# to be executed in root dir of the repo, otherwise imports break
+from lib import *
+from unix import *
 
-    if __name__ == '__main__':
+if __name__ == '__main__':
+    Chain(
+        Print("# install discord via flathub"), # already installed
         Chain(
-            Print("# install discord via flathub"),
-            Chain(
-                Apt('flatpak'),
-                AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
-                Flatpak('com.discordapp.Discord'),
-            ),
+            Apt('flatpak'), 
+            AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
+            Flatpak('com.discordapp.Discord'),
+        ),
 
-            Print("# install pandoc binary"),
-            From(
-                Command(
-                    Shell('wget -qO https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb /tmp/pandoc.deb'),
-                    Shell('rm /tmp/pandoc.deb'),
-                    Shell('test -f /tmp/pandoc.deb'),
-                ),
-                Dpkg('pandoc', '/tmp/pandoc.deb'), # requires root
+        Print("# install pandoc binary"),
+        From(
+            Command(
+                Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
+                Shell('rm /tmp/pandoc.deb'),
+                Shell('test -f /tmp/pandoc.deb'),
             ),
-        ).ensure_installed()
+            Dpkg('pandoc', '/tmp/pandoc.deb'), # requires root
+        ),
+    ).ensure_installed()
 ```
 
 output, if everything is already installed:
 
 ```bash
-# install discord
-bruno/home/bruno/Sync/Projekte/os_config dpkg --status 'flatpak'
-bruno/home/bruno/Sync/Projekte/os_config flatpak remotes --columns=name,options | grep 'flathub.*user'
-bruno/home/bruno/Sync/Projekte/os_config flatpak info 'com.discordapp.Discord'
-# setup nvim
-## install nvim
-bruno/home/bruno/Sync/Projekte/os_config test -f /usr/local/bin/nvim
-## clone nvim configuration
-bruno/home/bruno/Sync/Projekte/os_config test -d '/home/bruno/.config/nvim/.git'
-# install pandoc
-bruno/home/bruno/Sync/Projekte/os_config dpkg --status 'pandoc'
+# install discord via flathub
+user@~ dpkg --status 'flatpak'
+user@~ flatpak remotes --columns=name,options | grep 'flathub.*user'
+user@~ flatpak info 'com.discordapp.Discord'
+# install pandoc binary
+user@~ dpkg --status 'pandoc'
+user@~ test -f /tmp/pandoc.deb
+user@~ wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb
+user@~ dpkg --status 'pandoc'
+user@~ sudo dpkg --install '/tmp/pandoc.deb'
+user@~ test -f /tmp/pandoc.deb
+user@~ rm /tmp/pandoc.deb
 ```
 
 A large example can be found in `./my_ubuntu.py`.
