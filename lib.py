@@ -158,3 +158,22 @@ class Print(State):
     def detect(self) -> bool:
         return False
 
+
+class Breakpoint(State):
+    """
+    State that triggers breakpoints in install, uninstall and detect before entering the encapsulated state.
+    """
+    def __init__(self, target: State):
+        self.target = target
+
+    def install(self): 
+        breakpoint()
+        self.target.ensure_installed()
+
+    def uninstall(self):
+        breakpoint()
+        self.target.ensure_uninstalled()
+
+    def detect(self) -> bool:
+        breakpoint()
+        return self.target.detect()

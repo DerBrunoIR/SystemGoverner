@@ -5,7 +5,7 @@ from unix import *
 
 def main():
     config = Chain(
-            Print("# install apt packages"),
+            Print("\n# install apt packages\n"),
             Chain(
                 Apt('zsh'),
                 Apt('xclip'),
@@ -35,7 +35,7 @@ def main():
                 Apt('gdb'),
             ),
 
-            Print("# install flatpaks"),
+            Print("\n# install flatpaks\n"),
             Chain(
                 Apt('flatpak'),
                 AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
@@ -52,7 +52,7 @@ def main():
                 Flatpak('io.github.Qalculate'),
             ),
 
-            Print("# install docker"),
+            Print("\n# install docker\n"),
             Chain(
                 Command(
                     Shell('sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc'),
@@ -67,12 +67,12 @@ def main():
                 Apt('docker-compose-plugin'),
             ),
 
-            Print("# snap packages"),
+            Print("\n# snap packages\n"),
             Chain(
                 Snap('drawio'),
             ),
 
-            Print("# setup python env"),
+            Print("\n# setup python env\n"),
             Chain(
                     Apt('python3-pip'),
                     Apt('python3.12'),
@@ -86,19 +86,19 @@ def main():
                     Pip('pandas'),
                     ),
 
-            Print("# setup nvim"),
+            Print("\n# setup nvim\n"),
             Chain(
-                    Print("## install nvim"),
+                    Print("\n## install nvim\n"),
                     Command(
                         Shell('sudo wget https://github.com/neovim/neovim/releases/download/v0.10.3/nvim.appimage -O /usr/local/bin/nvim'),
                         Shell('sudo rm /usr/local/bin/nvim'),
                         Shell('test -f /usr/local/bin/nvim'),
                         ),
-                    Print("## clone nvim configuration"),
+                    Print("\n## clone nvim configuration\n"),
                     GitClone('git@github.com:DerBrunoIR/NeoVimConfig.git', '~/.config/nvim'),
                     ),
 
-            Print("# install dotfiles"),
+            Print("\n# install dotfiles\n"),
             Chain(
                 GitClone('git@github.com:DerBrunoIR/dotfiles.git', '~/dotfiles'),
                 Command(
@@ -108,7 +108,7 @@ def main():
                 ),
             ),
 
-            Print("# install sdkman "),
+            Print("\n# install sdkman \n"),
             Chain(
                 Command(
                     Shell("curl -s 'https://get.sdkman.io' | bash"),
@@ -117,7 +117,7 @@ def main():
                 ),
             ),
 
-            Print("# install golang"),
+            Print("\n# install golang\n"),
             Chain(
                 Command(
                     Shell('wget -qO- https://go.dev/dl/go1.20.1.linux-amd64.tar.gz | sudo tar xzf- -C /usr/local '),
@@ -126,18 +126,18 @@ def main():
                     ),
             ),
 
-            Print("# ohmyzsh"),
+            Print("\n# ohmyzsh\n"),
             Chain(
                 Command(
                     Shell("sh -c $(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"),
                     Shell("yes | uninstall_oh_my_zsh"),
-                    Shell("test -f ~/.oh-my-zsh"),
+                    Shell("test -d ~/.oh-my-zsh"),
                 ),
             ),
 
-            Print("# starship prompt"),
+            Print("\n# starship prompt\n"),
             Chain(
-                Print("## install starship"),
+                Print("\n## install starship\n"),
                 From(
                     Command(
                         Shell("wget https://starship.rs/install.sh -O /tmp/install.sh && chmod u+x /tmp/starship_install.sh"),
@@ -150,7 +150,7 @@ def main():
                         Shell("which starship"),
                     ),
                 ),
-                Print("## load starship config"),
+                Print("\n## load starship config\n"),
                 Command(
                     Shell('wgeth ttps://starship.rs/presets/toml/nerd-font-symbols.toml -o ~/.config/starship.toml'),
                     Shell('rm ~/.config/starship.toml'),
@@ -158,7 +158,7 @@ def main():
                 ),
             ),
 
-            Print("# install JetBrainsMono nerd font"),
+            Print("\n# install JetBrainsMono nerd font\n"),
             Chain(
                 From(
                     Command(
@@ -174,7 +174,7 @@ def main():
                 ),
             ),
 
-            Print("# install bat "),
+            Print("\n# install bat \n"),
             Chain(
                 Apt('bat'),
                 Command(
@@ -184,14 +184,14 @@ def main():
                 ),
             ),
 
-            Print("# install pandoc "),
+            Print("\n# install pandoc \n"),
             From(
                 Command(
                     Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
                     Shell('rm /tmp/pandoc.deb'),
                     Shell('test -f /tmp/pandoc.deb'),
                 ),
-                Dpkg('/tmp/pandoc.deb'),
+                Dpkg('pandoc', '/tmp/pandoc.deb'),
             ),
         )
 

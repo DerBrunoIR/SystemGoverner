@@ -19,6 +19,33 @@ class Runnable(ABC):
         """
         pass
 
+class AnsiColor:
+    """ ANSI color codes """
+    BLACK = "\033[0;30m"
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    BROWN = "\033[0;33m"
+    BLUE = "\033[0;34m"
+    PURPLE = "\033[0;35m"
+    CYAN = "\033[0;36m"
+    LIGHT_GRAY = "\033[0;37m"
+    DARK_GRAY = "\033[1;30m"
+    LIGHT_RED = "\033[1;31m"
+    LIGHT_GREEN = "\033[1;32m"
+    YELLOW = "\033[1;33m"
+    LIGHT_BLUE = "\033[1;34m"
+    LIGHT_PURPLE = "\033[1;35m"
+    LIGHT_CYAN = "\033[1;36m"
+    LIGHT_WHITE = "\033[1;37m"
+    BOLD = "\033[1m"
+    FAINT = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDERLINE = "\033[4m"
+    BLINK = "\033[5m"
+    NEGATIVE = "\033[7m"
+    CROSSED = "\033[9m"
+    END = "\033[0m"
+
 
 class Shell(Runnable):
     """
@@ -49,10 +76,13 @@ class Shell(Runnable):
 
     def run(self, user: str = None, cwd: str = None, sudo: bool = False) -> subprocess.CompletedProcess:
         cmd = "sudo " + self.cmd if sudo else self.cmd
-        cmd = os.path.expanduser(os.path.expandvars(cmd))
+        cmd = os.path.expandvars(cmd.replace('~', '$HOME'))
+
         user = user if user else self._get_process_owner_username()
+
         cwd = cwd if cwd else os.getcwd()
-        print(f"{user}@{cwd} {cmd}")
+
+        print(f"{AnsiColor.GREEN}{user}{AnsiColor.LIGHT_CYAN}{cwd}{AnsiColor.END} {cmd}")
         return subprocess.run(
                 cmd,
                 capture_output=True, 
@@ -80,15 +110,11 @@ class Command(State):
 
     def install(self):
         r = self._install.run()
-        if r.returncode == 0:
-            return
-        raise Exception(f"failed to install '{self.archive}'. \nstderr: {r.stderr.decode()}")
+        assert r.returncode == 0, f"install failed: Shell exit code {r.returncode}\n{r.stderr.decode()}"
 
     def uninstall(self):
         r = self._uninstall.run()
-        if r.returncode == 0:
-            return
-        raise Exception(f"failed to uninstall '{self.archive}'. \nstderr: {r.stderr.decode()}")
+        assert r.returncode == 0, f"uninstall failed: Shell exit code {r.returncode}\n{r.stderr.decode()}"
 
     def detect(self):
         r = self._detect.run()
@@ -98,23 +124,12 @@ class Command(State):
 # packet managers
 
 class Dpkg(State):
-    def _get_package_name_from_archive(self, archive) -> str:
+    def __init__(self, package: str, archive: str):
         """
-        archive: path to debian file
-        returns: package name or None if no package name could be found.
-        """
-        r = Shell(f"dpkg --info '{archive}'").pipe('grep Package:').run()
-        assert r.returncode == 0, f"could not get archive info for '{archive}':\n{r.stderr.decode()}"
-        output = r.stdout.decode()
-        num_lines = output.count('\n')
-        # package name musst exist and be unique
-        assert num_lines == 1, f"Could not determine package name for archive '{archive}'."
-        return output.split(": ")[1].strip()
-
-    def __init__(self, archive: str):
-        """
+        package: package name of the installed archive (for an archive 'dpkg --info *.db').
         archive: debian archive file (usually matched by *.deb)
         """
+        self.package = package
         self.archive = archive
 
     def install(self):
@@ -123,13 +138,11 @@ class Dpkg(State):
         assert r.returncode == 0, f"failed to install '{self.archive}'. \nstderr: {r.stderr.decode()}"
 
     def uninstall(self):
-        package = self._get_package_name_from_archive(self.archive)
-        r = Shell(f"dpkg --remove '{package}'").run(sudo=True)
+        r = Shell(f"dpkg --remove '{self.package}'").run(sudo=True)
         assert r.returncode == 0, f"failed to uninstall '{self.archive}'. \nstderr: {r.stderr.decode()}"
 
     def detect(self):
-        package = self._get_package_name_from_archive(self.archive)
-        r = Shell(f"dpkg --status '{package}'").run()
+        r = Shell(f"dpkg --status '{self.package}'").run()
         return r.returncode == 0
 
 
