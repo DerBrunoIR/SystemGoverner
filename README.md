@@ -1,5 +1,8 @@
 This python library contains utils to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion.
-Those utils are easy to extend and modify for your needs.
+Those utils are easy to extend and modify for your needs using python.
+This library could technically support platforms other than `ubuntu`.
+But the intended use is only the configuration of my Ubuntu system.
+
 
 
 # Example Usage
@@ -32,6 +35,9 @@ Those utils are easy to extend and modify for your needs.
 
 A large example can be found in `./my_ubuntu.py`.
 
+# Security
+
+The Ubuntu utils are made for trusted input only, since they execute shell commands.
 
 # Documentation
 
