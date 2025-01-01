@@ -34,7 +34,7 @@ if __name__ == '__main__':
     ).ensure_installed()
 ```
 
-log of the previous program 
+log without colors:
 
 ```plain
 # install discord via flathub
