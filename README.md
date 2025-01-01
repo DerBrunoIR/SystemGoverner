@@ -74,28 +74,23 @@ A large example can be found in `./my_ubuntu.py`.
     ```
     
 
-The following classes **encapsulate** other states.
-
-- `Chain`: chain multiple states together.
-- `Try`: Ignore exceptions from encapsulated state. 
-- `Invert`: Swap `install` and `uninstall` method.
-- `From`: Temporally install dependency state to install target state.
-- `Breakpoint`: Enters a breakpoint before accessing encapsulated state.
-- `Print`: just prints a message, has no encapsulated state.
-
-
-The following classes are useful for **changing** Ubuntu systems:
-
-- `Command`: A state described by shell commands for installation, uninstallation and detection.
-- `Dpkg`: State to install Debian packages from an archive.
-- `Apt`: State to install apt packages.
-- `Snap`: State to install snap packages.
-- `Flatpak`: State for install flatpak packages. 
-- `Pip`: State for adding pip packages.
-- `GitClone`: State for cloning git repositories.
-- `AddAptRepository`: State for adding apt repositories.
-- `AddFlatpakRemote`: State for adding flatpak remotes.
-
-- `Runnable`: Interface for something that can be `run`.
-- `Shell`: Class for running shell commands.
+- Classes **encapsulating** other states:
+    - `Chain`: chain multiple states together.
+    - `Try`: Ignore exceptions from encapsulated state. 
+    - `Invert`: Swap `install` and `uninstall` method.
+    - `From`: Temporally install dependency state to install target state.
+    - `Breakpoint`: Enters a breakpoint before accessing encapsulated state.
+    - `Print`: just prints a message, has no encapsulated state.
+- Classes for **changing Ubuntu systems**:
+    - `Command`: A state described by shell commands for installation, uninstallation and detection.
+    - `Dpkg`: State to install Debian packages from an archive.
+    - `Apt`: State to install apt packages.
+    - `Snap`: State to install snap packages.
+    - `Flatpak`: State for install flatpak packages. 
+    - `Pip`: State for adding pip packages.
+    - `GitClone`: State for cloning git repositories.
+    - `AddAptRepository`: State for adding apt repositories.
+    - `AddFlatpakRemote`: State for adding flatpak remotes.
+    - `Runnable`: Interface for something that can be `run`.
+    - `Shell`: Class for running shell commands.
 
