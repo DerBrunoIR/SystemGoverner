@@ -221,7 +221,6 @@ class Flatpak(State):
         r = Shell(f"flatpak info '{self.package}'").run()
         return r.returncode == 0
 
-# TODO test all below
 
 class AddAptRepository(State):
     def __init__(self, ppa: str):
