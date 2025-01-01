@@ -33,6 +33,22 @@ But the intended use is only the configuration of my Ubuntu system.
         ).ensure_installed()
 ```
 
+output
+
+```bash
+# install discord
+bruno/home/bruno/Sync/Projekte/os_config dpkg --status 'flatpak'
+bruno/home/bruno/Sync/Projekte/os_config flatpak remotes --columns=name,options | grep 'flathub.*user'
+bruno/home/bruno/Sync/Projekte/os_config flatpak info 'com.discordapp.Discord'
+# setup nvim
+## install nvim
+bruno/home/bruno/Sync/Projekte/os_config test -f /usr/local/bin/nvim
+## clone nvim configuration
+bruno/home/bruno/Sync/Projekte/os_config test -d '/home/bruno/.config/nvim/.git'
+# install pandoc
+bruno/home/bruno/Sync/Projekte/os_config dpkg --status 'pandoc'
+```
+
 A large example can be found in `./my_ubuntu.py`.
 
 # Security
