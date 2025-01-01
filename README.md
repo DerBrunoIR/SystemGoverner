@@ -33,7 +33,7 @@ But the intended use is only the configuration of my Ubuntu system.
         ).ensure_installed()
 ```
 
-output
+output, if everything is already installed:
 
 ```bash
 # install discord
