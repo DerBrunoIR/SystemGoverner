@@ -74,28 +74,9 @@ class Parallel(State):
     pass
 
 
-# catches exceptions
-class InstallException(Exception):
-    """
-    Shall be raised if State installation fails.
-    """
-    pass
-
-class UninstallException(Exception):
-    """
-    Shall be raised if State uninstallation fails.
-    """
-    pass
-
-class DetectException(Exception):
-    """
-    Shall be raised if State detection fails.
-    """
-    pass
-
 class Try(State):
     """
-    State that ignores InstallException, DetectException and UninstallException from the encapuslated State.
+    State that ignores Exception's from the encapuslated State.
     """
 
     def __init__(self, state: State):
@@ -104,19 +85,19 @@ class Try(State):
     def install(self):
         try:
             self.state.ensure_installed()
-        except InstallException:
+        except Exception:
             pass
 
     def uninstall(self):
         try:
             self.state.ensure_uninstalled()
-        except InstallException:
+        except Exception:
             pass
 
     def detect(self):
         try:
             return self.state.detect()
-        except InstallException:
+        except Exception:
             return False
 
 
