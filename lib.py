@@ -16,7 +16,8 @@ class State(ABC):
     @abstractmethod
     def install(self) -> None:
         """
-        Installs target state on system.
+        Installs target state on system. 
+        Undefined behaivior if target State is already installed.
         """
         pass
 
@@ -24,6 +25,7 @@ class State(ABC):
     def uninstall(self) -> None:
         """
         Uninstalls target state from system.
+        Undefined behaivior if target State is already uninstalled.
         """
         pass
 
@@ -47,6 +49,8 @@ class Chain(State):
     A State for installing, detecting and uninstalling multiple other states.
     """
     def __init__(self, *states: State):
+        for state in states:
+            assert isinstance(state, State), f"expected State object, got '{state}'"
         self.states = states
 
     def detect(self) -> bool:
@@ -54,13 +58,11 @@ class Chain(State):
 
     def install(self):
         for state in self.states:
-            if not state.detect():
-                state.install()
+            state.ensure_installed()
 
     def uninstall(self):
         for state in self.states:
-            if state.detect():
-                state.uninstall()
+            state.ensure_uninstalled()
 
 
 class Parallel(State):
@@ -68,6 +70,7 @@ class Parallel(State):
     A State that installes, detectes, and uninstalls multiple other states concurrently.
     """
     # TODO
+    # probably a bad idea
     pass
 
 
@@ -100,13 +103,13 @@ class Try(State):
 
     def install(self):
         try:
-            self.state.install()
+            self.state.ensure_installed()
         except InstallException:
             pass
 
     def uninstall(self):
         try:
-            self.state.install()
+            self.state.ensure_uninstalled()
         except InstallException:
             pass
 
@@ -119,17 +122,58 @@ class Try(State):
 
 class Invert(State):
     """
-    State that switches install and uninstall from the encapsulated State, and invertes the detect result.
+    State that switches install and uninstall from the target State, and invertes the detect result.
     """
 
-    def __init__(self, state: State):
-        self.state = state
+    def __init__(self, target: State):
+        self.target = state
 
     def install(self):
-        self.state.uninstall()
+        self.target.ensure_uninstalled()
 
     def uninstall(self):
-        self.state.install()
+        self.target.ensure_installed()
 
     def detect(self):
-        return not self.state.detect()
+        return not self.target.detect()
+
+
+class From(State):
+    """
+    State that installs temporally a dependency State that is required to install the target State.
+    """
+
+    def __init__(self, dependency: State, target: State):
+        self.dependency = dependency
+        self.target = target
+
+    def install(self):
+        self.dependency.ensure_installed()
+        self.target.ensure_installed()
+        self.dependency.ensure_uninstalled()
+
+    def uninstall(self):
+        self.target.ensure_uninstalled()
+
+    def detect(self):
+        return self.target.detect()
+
+
+class Print(State):
+    """
+    State that prints the given message if it is installed or uninstalled.
+    Usefull for logging.
+    """
+
+    def __init__(self, msg: str):
+        self.msg = msg
+
+    def install(self):
+        print(self.msg)
+
+    def uninstall(self):
+        print(self.msg)
+
+    def detect(self) -> bool:
+        return False
+

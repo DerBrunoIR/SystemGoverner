@@ -21,6 +21,9 @@ class Runnable(ABC):
 
 
 class Shell(Runnable):
+    """
+    Can build and run shell commands.
+    """
     def __init__(self, cmd: str):
         self.cmd = cmd
 
@@ -46,8 +49,10 @@ class Shell(Runnable):
 
     def run(self, user: str = None, cwd: str = None, sudo: bool = False) -> subprocess.CompletedProcess:
         cmd = "sudo " + self.cmd if sudo else self.cmd
+        cmd = os.path.expanduser(os.path.expandvars(cmd))
         user = user if user else self._get_process_owner_username()
         cwd = cwd if cwd else os.getcwd()
+        print(f"{user}@{cwd} {cmd}")
         return subprocess.run(
                 cmd,
                 capture_output=True, 
@@ -56,53 +61,37 @@ class Shell(Runnable):
                 shell=True,
             )
 
-    # convenience methods
-    @classmethod
-    def download(self, url: str) -> Shell:
-        return self.pipe(f'wget -qO- "{url}"')
-
-    def unzip(self) -> Shell:
-        return self.pipe(f'unzip -p -')
-
-    def untar(self) -> Shell:
-        return self.pipe(f'tar x0')
-
-    def untargz(self) -> Shell:
-        return self.pipe(f'tar xzO')
-
-    def untarbz2(self) -> Shell:
-        return self.pipe(f'tar xJ0')
-
-    def read(self, path: str) -> Shell:
-        return self.pipe(f'cat "{path}"')
-
 
 
 class Command(State):
+    """
+    State that reaches his target State by running different Shell runnables.
+    """
+
     def __init__(self, install: Shell, uninstall: Shell, detect: Shell):
         """
         install: Shell script to install target
         uninstall: Shell script to uninstall target
         detect: Shell script to detect if target is installed. Must return code 0 if installed or > 0 if not installed.
         """
-        self.install = install
-        self.uninstall = uninstall
-        self.detect = detect
+        self._install = install
+        self._uninstall = uninstall
+        self._detect = detect
 
     def install(self):
-        r = self.install.run()
+        r = self._install.run()
         if r.returncode == 0:
             return
         raise InstallException(f"failed to install '{self.archive}'. \nstderr: {r.stderr.decode()}")
 
     def uninstall(self):
-        r = self.uninstall.run()
+        r = self._uninstall.run()
         if r.returncode == 0:
             return
         raise UninstallException(f"failed to uninstall '{self.archive}'. \nstderr: {r.stderr.decode()}")
 
     def detect(self):
-        r = self.detect.run()
+        r = self._detect.run()
         return r.returncode == 0
 
 
@@ -118,20 +107,22 @@ class Dpkg(State):
 
     def __init__(self, archive: str):
         """
-        archive: debian archive file (ends with *.db)
+        archive: debian archive file (usually matched by *.deb)
         """
-        assert os.path.isfile(archive), f"archive must be a file, got '{archive}'."
         self.archive = archive
-        self.package = self._get_package_name_from_archive(archive)
 
     def install(self):
+        assert os.path.isfile(archive), f"archive must be a file, got '{archive}'."
         r = Shell(f"dpkg --install '{self.archive}'").run(sudo=True)
         if r.returncode == 0:
             return
         raise InstallException(f"failed to install '{self.archive}'. \nstderr: {r.stderr.decode()}")
 
     def uninstall(self):
-        r = Shell(f"dpkg --remove '{self.package}'").run(sudo=True)
+        assert os.path.isfile(archive), f"no debian archive found, got '{archive}'."
+        package = self._get_package_name_from_archive(archive)
+
+        r = Shell(f"dpkg --remove '{package}'").run(sudo=True)
         if r.returncode == 0:
             return
         raise UninstallException(f"failed to uninstall '{self.archive}'. \nstderr: {r.stderr.decode()}")
@@ -164,31 +155,6 @@ class Apt(State):
         r = Shell(f"dpkg --status '{self.package}'").run()
         return r.returncode == 0
 
-
-class AptAddRepository(State):
-    def __init__(self, ppa: str):
-        """
-        ppa: url to apt repository
-        """
-        self.ppa = ppa
-
-    def install(self):
-        # add ppa
-        r = Shell(f"add-apt-repository '{self.ppa}' -y").run(sudo=True)
-        if r.returncode != 0:
-            raise InstallException(f"failed to add repository '{self.ppa}'. \nstderr: {r.stderr.decode()}")
-
-    def uninstall(self):
-        r = Shell(f"add-apt-repository --remove '{self.ppa}' -y").run(sudo=True)
-        if r.returncode == 0:
-            return
-        raise UninstallException(f"failed to remove repository '{self.ppa}'. \nstderr: {r.stderr.decode()}")
-
-    def detect(self) -> bool:
-        r = Shell(f"add-apt-repository --list").pipe(f"grep '{self.ppa}'").run()
-        output = r.stdout.decode()
-        num_lines = output.count('\n')
-        return num_lines > 0
 
 class Snap(State):
     def __init__(self, package: str, classic: bool = False):
@@ -241,6 +207,33 @@ class Flatpak(State):
         r = Shell(f"flatpak info '{self.package}'").run()
         return r.returncode == 0
 
+# TODO test all below
+
+class AddAptRepository(State):
+    def __init__(self, ppa: str):
+        """
+        ppa: url to apt repository
+        """
+        self.ppa = ppa
+
+    def install(self):
+        # add ppa
+        r = Shell(f"add-apt-repository '{self.ppa}' -y").run(sudo=True)
+        if r.returncode != 0:
+            raise InstallException(f"failed to add repository '{self.ppa}'. \nstderr: {r.stderr.decode()}")
+
+    def uninstall(self):
+        r = Shell(f"add-apt-repository --remove '{self.ppa}' -y").run(sudo=True)
+        if r.returncode == 0:
+            return
+        raise UninstallException(f"failed to remove repository '{self.ppa}'. \nstderr: {r.stderr.decode()}")
+
+    def detect(self) -> bool:
+        r = Shell(f"add-apt-repository --list").pipe(f"grep '{self.ppa}'").run()
+        output = r.stdout.decode()
+        num_lines = output.count('\n')
+        return num_lines > 0
+
 
 class AddFlatpakRemote(State):
     def __init__(self, name: str, url: str, system: bool = False):
@@ -249,25 +242,72 @@ class AddFlatpakRemote(State):
         self.system = 'system' if system else 'user'
 
     def install(self):
-        r = Shell(f"sudo flatpak remote-add '{self.name}' '{self.url}'")
+        r = Shell(f"sudo flatpak remote-add '{self.name}' '{self.url}'").run()
         if r.returncode != 0:
             raise InstallException(f"failed to install repository '{self.url}'. \nstderr: {r.stderr.decode()}")
         return
 
 
     def uninstall(self):
-        r = Shell(f"sudo flatpak remote-delete '{self.name}'")
+        r = Shell(f"sudo flatpak remote-delete '{self.name}'").run()
         if r.returncode != 0:
             raise UninstallException(f"failed to uninstall repository '{self.url}'. \nstderr: {r.stderr.decode()}")
         return
 
 
     def detect(self) -> bool:
-        r = Shell("flatpak remotes --columns=name,url,options").pipe(f"grep '{self.name}.*{self.url}.*{self.system}'").run()
+        r = Shell("flatpak remotes --columns=name,options").pipe(f"grep '{self.name}.*{self.system}'").run()
         output = r.stdout.decode()
         num_lines = output.count('\n')
         return num_lines > 0
 
 
+class Pip(State):
+    def __init__(self, name: str):
+        self.name = name
 
+    def install(self):
+        r = Shell(f"pip install '{self.name}'").run()
+        if r.returncode != 0:
+            raise InstallException(f"failed to install repository '{self.name}'. \nstderr: {r.stderr.decode()}")
+        return
+
+
+    def uninstall(self):
+        r = Shell(f"pip uninstall '{self.name}' -y").run()
+        if r.returncode != 0:
+            raise UninstallException(f"failed to uninstall package '{self.name}'. \nstderr: {r.stderr.decode()}")
+        return
+
+
+    def detect(self) -> bool:
+        r = Shell("pip list").pipe(f"grep '^{self.name}\s{2,}'").run()
+        output = r.stdout.decode()
+        num_lines = output.count('\n')
+        return num_lines > 0
+
+
+class GitClone(State):
+    def __init__(self, url: str, path: str):
+        """
+        url: git repository url
+        path: target path for repository
+        """
+        self.url = url
+        self.path = path
+        assert not os.path.isdir(path), f"can't clone git repository '{self.url}' to '{self.path}' since this directory already exists."
+
+    def install(self):
+        r = Shell(f"git clone --depth 1 '{self.url}' '{self.path}'").run()
+        if r.returncode != 0:
+            raise InstallException(f"failed to clone repository '{self.url}' to '{self.path}'.\n{r.stderr.decode()}")
+
+    def uninstall(self):
+        r = Shell(f"rm -rf '{self.path}'").run()
+        if r.returncode != 0:
+            raise UninstallException(f"failed to remove repository at '{self.path}'.\n{r.stderr.decode()}")
+
+    def detect(self) -> bool:
+        git_dir = os.path.join(self.path, '.git')
+        return os.path.isdir(git_dir)
 
