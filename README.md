@@ -11,7 +11,7 @@ Those utils are easy to extend and modify for your needs.
 
     if __name__ == '__main__':
         Chain(
-            Print("# install discrod from flathub"),
+            Print("# install discord via flathub"),
             Chain(
                 Apt('flatpak'),
                 AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
