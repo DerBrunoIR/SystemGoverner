@@ -17,7 +17,7 @@ class State(ABC):
     def install(self) -> None:
         """
         Installs target state on system. 
-        Undefined behaivior if target State is already installed.
+        Undefined behavior if target State is already installed.
         """
         pass
 
@@ -25,7 +25,7 @@ class State(ABC):
     def uninstall(self) -> None:
         """
         Uninstalls target state from system.
-        Undefined behaivior if target State is already uninstalled.
+        Undefined behavior if target State is already uninstalled.
         """
         pass
 

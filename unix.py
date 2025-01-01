@@ -320,5 +320,7 @@ class GitClone(State):
 
     def detect(self) -> bool:
         git_dir = os.path.join(self.path, '.git')
-        return os.path.isdir(git_dir)
+        r = Shell(f"test -d '{git_dir}'").run()
+        return r.returncode == 0
+
 
