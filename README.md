@@ -87,24 +87,24 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     
 
 - Classes **encapsulating** other states:
-    - `Chain`: chain multiple states together.
-    - `Try`: Ignore exceptions from encapsulated state. 
-    - `Invert`: Swap `install` and `uninstall` method.
-    - `From`: Temporally install dependency state to install target state.
-    - `Breakpoint`: Enters a breakpoint before accessing encapsulated state.
-    - `Print`: just prints a message, has no encapsulated state.
+    - `Chain`: chain multiple states together
+    - `Try`: Ignore exceptions from encapsulated state 
+    - `Invert`: Swap `install` and `uninstall` method
+    - `From`: Temporally install dependency state to install target state
+    - `Breakpoint`: Enters a breakpoint before accessing encapsulated state
+    - `Print`: just prints a message, has no encapsulated state
 - Classes for **changing Ubuntu systems**:
-    - `Command`: A state described by shell commands for installation, uninstallation and detection.
-    - `Dpkg`: State to install Debian packages from an archive.
-    - `Apt`: State to install apt packages.
-    - `Snap`: State to install snap packages.
-    - `Flatpak`: State to install flatpak packages. 
-    - `Pip`: State to install pip packages.
-    - `GitClone`: State to clone git repositories.
-    - `AddAptRepository`: State to add apt repositories.
-    - `AddFlatpakRemote`: State to add flatpak remotes.
-    - `Runnable`: Interface for something that can be `run`.
-    - `Shell`: Class for running shell commands.
+    - `Command`: A state described by shell commands for installation, uninstallation and detection
+    - `Dpkg`: State to install Debian packages from an archive
+    - `Apt`: State to install apt packages
+    - `Snap`: State to install snap packages
+    - `Flatpak`: State to install flatpak packages 
+    - `Pip`: State to install pip packages
+    - `GitClone`: State to clone git repositories
+    - `AddAptRepository`: State to add apt repositories
+    - `AddFlatpakRemote`: State to add flatpak remotes
+    - `Runnable`: Interface for something that can be `run`
+    - `Shell`: Class for running shell commands
 
 # TODO
 
