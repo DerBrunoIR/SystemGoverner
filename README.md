@@ -98,11 +98,11 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     - `Dpkg`: State to install Debian packages from an archive.
     - `Apt`: State to install apt packages.
     - `Snap`: State to install snap packages.
-    - `Flatpak`: State for install flatpak packages. 
-    - `Pip`: State for adding pip packages.
-    - `GitClone`: State for cloning git repositories.
-    - `AddAptRepository`: State for adding apt repositories.
-    - `AddFlatpakRemote`: State for adding flatpak remotes.
+    - `Flatpak`: State to install flatpak packages. 
+    - `Pip`: State to install pip packages.
+    - `GitClone`: State to clone git repositories.
+    - `AddAptRepository`: State to add apt repositories.
+    - `AddFlatpakRemote`: State to add flatpak remotes.
     - `Runnable`: Interface for something that can be `run`.
     - `Shell`: Class for running shell commands.
 
