@@ -1,8 +1,6 @@
 This python library contains utils to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion.
 Those utils are easy to extend and modify for your needs using python.
-This library could technically support platforms other than `ubuntu`.
-But the intended use is only the configuration of my Ubuntu system.
-
+Currently the only supported platform is `ubuntu`.
 
 
 # Example Usage
