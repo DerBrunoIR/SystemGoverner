@@ -106,3 +106,7 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     - `Runnable`: Interface for something that can be `run`.
     - `Shell`: Class for running shell commands.
 
+# TODO
+
+- System configuration is difficult to test without much effort.
+- Some time in the future I will probably investigate writing tests.
