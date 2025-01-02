@@ -23,9 +23,9 @@ if __name__ == '__main__':
         Print("# install pandoc binary"),
         From(
             Command(
-                Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
-                Shell('rm /tmp/pandoc.deb'),
-                Shell('test -f /tmp/pandoc.deb'),
+                install=Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
+                uninstall=Shell('rm /tmp/pandoc.deb'),
+                detect=Shell('test -f /tmp/pandoc.deb'),
             ),
             Dpkg('pandoc', '/tmp/pandoc.deb'), # requires root
         ),
