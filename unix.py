@@ -294,7 +294,7 @@ class Pip(State):
 
 
     def detect(self) -> bool:
-        r = Shell(f"pip list | grep -E '^{self.name}\s\s'").run()
+        r = Shell(f"pip show '{self.name}'").run()
         output = r.stdout.decode()
         num_lines = output.count('\n')
         return num_lines > 0
