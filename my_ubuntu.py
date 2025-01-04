@@ -13,6 +13,7 @@ def main():
                 # Apt('vim'),
                 Apt('firefox'),
                 Apt('autojump'),
+                Apt('i3'),
 
                 Apt('jq'),
                 Apt('git'),
