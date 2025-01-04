@@ -102,8 +102,8 @@ def main():
             Chain(
                 GitClone('git@github.com:DerBrunoIR/dotfiles.git', '~/dotfiles'),
                 Command(
-                    Shell('~/dotfiles/install'),
-                    Shell('~/dotfiles/uninstall'),
+                    Shell('yes | ~/dotfiles/install'),
+                    Shell('yes | ~/dotfiles/uninstall'),
                     Shell('test -f ~/.zshrc'),
                 ),
             ),
@@ -192,6 +192,15 @@ def main():
                     Shell('test -f /tmp/pandoc.deb'),
                 ),
                 Dpkg('pandoc', '/tmp/pandoc.deb'),
+            ),
+
+            Print("\n# Link flatpaks to /usr/bin/\n"),
+            Chain(
+                Command(
+                    Shell("yes | ~/dotfiles/link-flatpaks.sh"),
+                    Shell("yes | ~/dotfiles/unlink-flatpaks.sh"),
+                    Shell("test -f ~/.profile"),
+                ),
             ),
         )
 
