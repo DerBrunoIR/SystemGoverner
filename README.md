@@ -1,7 +1,7 @@
 # Prototype
 
-This python library contains utils to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion.
-Those utils are easy to extend and modify for your needs using python.
+This respository contains utils to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using python.
+Those utils are easy to extend and modify for your needs.
 Currently the only targeted platform is `ubuntu`.
 
 
