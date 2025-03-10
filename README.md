@@ -20,7 +20,7 @@ from unix import *
 
 if __name__ == '__main__':
     Chain(
-        Print("# install discord via flathub"), # already installed
+        Print("# install discord via flathub"),
         Chain(
             Apt('flatpak'), 
             AddFlatpakRemote('flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo'),
@@ -39,10 +39,10 @@ if __name__ == '__main__':
     ).ensure_installed()
 ```
 
-colorless log:
+colorless command log:
 
 ```plain
-# install discord via flathub
+# install discord via flathub (already installed)
 user@~ dpkg --status 'flatpak'
 user@~ flatpak remotes --columns=name,options | grep 'flathub.*user'
 user@~ flatpak info 'com.discordapp.Discord'
