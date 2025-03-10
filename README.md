@@ -69,25 +69,45 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     This interface is used by all other utils:
     ```python
     class State(ABC):
+        """
+        Abstraction for installing, detecting and uninstalling a target state from the system.
+        """
+        @abstractmethod
+        def detect(self) -> bool:
+            """
+            Returns true if the target state is already installed.
+            """
+            pass
+    
+        @abstractmethod
         def install(self) -> None:
             """
             Installs target state on system. 
             Undefined behavior if target State is already installed.
             """
             pass
-
+    
+        @abstractmethod
         def uninstall(self) -> None:
             """
             Uninstalls target state from system.
             Undefined behavior if target State is already uninstalled.
             """
             pass
-
-        def detect(self) -> bool:
+    
+        def ensure_installed(self):
             """
-            Returns True if the target state is already installed otherwise False.
+            Convenience method to install target state if not installed.
             """
-            pass
+            if not self.detect():
+                self.install()
+    
+        def ensure_uninstalled(self):
+            """
+            Convenience method to uninstall target state if installed.
+            """
+            if self.detect():
+                self.uninstall()
     ```
     
 
