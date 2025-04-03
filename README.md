@@ -66,7 +66,7 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
 
 - `State` Base class for idempotent state changes on the system
 
-    This interface is used by all other utils:
+    The only important interface:
     ```python
     class State(ABC):
         """
@@ -94,20 +94,6 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
             Undefined behavior if target State is already uninstalled.
             """
             pass
-    
-        def ensure_installed(self):
-            """
-            Convenience method to install target state if not installed.
-            """
-            if not self.detect():
-                self.install()
-    
-        def ensure_uninstalled(self):
-            """
-            Convenience method to uninstall target state if installed.
-            """
-            if self.detect():
-                self.uninstall()
     ```
     
 
