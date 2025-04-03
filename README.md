@@ -9,7 +9,7 @@ Additionally there are some higher order utility classes for more convenient con
 
 # Example Usage
 
-`example.py`:
+`example.py` (installations via dpkg require root):
 ```python
 # to be executed in root dir of the repo, otherwise imports break. see section TODO
 from lib import *
