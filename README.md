@@ -7,7 +7,7 @@ Indempotency means, the library is able to detect if parts of the configuration 
 
 The main feature is the convinience of python as configuration language and the simplicity of adding custom utility classes.
 
-Additionally there are some higher order utility classes for more convenient configuration.
+Additionally there are higher order utility classes for more convenient configuration and some helper classes for Ubuntu systems.
 
 
 # Example Usage
