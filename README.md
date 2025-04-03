@@ -9,11 +9,9 @@ Additionally there are some higher order utility classes for more convenient con
 
 # Example Usage
 
-`example.py` (installations via dpkg require root):
+`example.py`:
 ```python
-# to be executed in root dir of the repo, otherwise imports break. see section TODO
-from lib import *
-from unix import *
+# imports omitted
 
 if __name__ == '__main__':
     # In this example we store the entire configuration in a single Chain object.
@@ -43,9 +41,9 @@ if __name__ == '__main__':
                 uninstall=Shell('rm /tmp/pandoc.deb'),
                 detect=Shell('test -f /tmp/pandoc.deb'),
             ),
-            # A utility for Dpkg already exists and we use it here as target State.
+            # A utility for global dpkg installations already exists and we use it here as target State.
             # Notice: here we can access the previously downloaded file '/tmp/pandoc.deb'.
-            target=Dpkg('pandoc', '/tmp/pandoc.deb'), # installing via dpkg always requires root
+            target=Dpkg('pandoc', '/tmp/pandoc.deb'), # requires ROOT
         ),
     ).ensure_installed() # finally we call ensure_installed once on the root of the defined tree.
 ```
