@@ -10,6 +10,21 @@ The main feature is the convinience of python as configuration language and the 
 Additionally there are higher order utility classes for more convenient configuration and some helper classes for Ubuntu systems.
 
 
+# State
+
+A **State** is any change you could do to a system that fullfills the following conditions:
+- It can be installed by performing a sequence of actions.
+- It must be detectable if the state is currently installed or not.
+- It can be uninstalled by performing a sequence of actions.
+
+Examples for States are:
+- installing a programm via apt on Ubuntu
+- creating a file/directory in the filesystem
+
+A counter example would be:
+- Any two changes to the system that can not be distinguished.
+
+
 # Example Usage
 
 `example.py`:
