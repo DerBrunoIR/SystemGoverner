@@ -73,7 +73,7 @@ A large example can be found in `./my_ubuntu.py`.
 # TODO
 
 System configuration is difficult to test without much effort.
-Some time in the future I will probably investigate writing tests.
+Some time in the future I will maybe investigate writing tests.
 Until then, most code is tested only manually by me.
 
 Package the library.
