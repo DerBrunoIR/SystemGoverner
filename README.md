@@ -57,7 +57,7 @@ Debug output, sadly only displayed without colors here, together with explanatio
 ```plain
 # install flatpak, add flathub repository and install discord
 user@~ dpkg --status 'flatpak' // flatpak is already installed
-user@~ flatpak remotes --columns=name,options | grep 'flathub.*user' // flathub is allready available
+user@~ flatpak remotes --columns=name,options | grep 'flathub.*user' // flathub is already available
 user@~ flatpak info 'com.discordapp.Discord'  // discord flatpak is already installed
 # install pandoc binary
 user@~ dpkg --status 'pandoc' // pandoc is not installed
