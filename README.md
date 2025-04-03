@@ -47,7 +47,7 @@ if __name__ == '__main__':
         # The utility class From installs a later removed dependency State necessary to install the given target State.
         From(
             # There is no utility class to download binaries from github, therefore we have to improvise by using the Command State.
-            # The Command State allows us to make shell commands indempotent by defining actions install, detect and uninstall. 
+            # The Command State allows us to make shell commands indempotent by defining how install, detect and uninstall it. 
             dependency=Command(
                 install=Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
                 uninstall=Shell('rm /tmp/pandoc.deb'),
