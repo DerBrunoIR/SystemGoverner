@@ -59,7 +59,7 @@ if __name__ == '__main__':
         ),
     ).ensure_installed() # finally we call ensure_installed once on the root of the defined tree.
 ```
-Debug output, sadly only displayed without colors here, together with explanations notated as `// annotation`:
+Debug output from me, sadly displayed without colors here, together with explanations notated as `// annotation`:
 ```plain
 # install flatpak, add flathub repository and install discord
 user@~ dpkg --status 'flatpak' // flatpak is already installed
