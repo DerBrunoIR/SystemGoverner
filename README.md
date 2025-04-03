@@ -69,7 +69,7 @@ Higher order utility classes, like `From`, can not know what actions States, lik
 For example a bad custom State could already install the `target` State and installing it twice could corrupt the existing installation.
 Therefore we carfully double check.
 
-A large example can be found in `./my_ubuntu.py`.
+A larger and less documented example can be found in `./my_ubuntu.py`.
 
 # TODO
 
