@@ -38,21 +38,23 @@ if __name__ == '__main__':
         ),
     ).ensure_installed()
 ```
-output (missing colors):
+Debug output, sadly only displayed without colors here, together with explanations notated as `// annotation`:
 ```plain
-# install discord via flathub (already installed)
-user@~ dpkg --status 'flatpak'
-user@~ flatpak remotes --columns=name,options | grep 'flathub.*user'
-user@~ flatpak info 'com.discordapp.Discord'
+# install flatpak, add flathub repository and install discord
+user@~ dpkg --status 'flatpak'  // flatpak is already installed
+user@~ flatpak remotes --columns=name,options | grep 'flathub.*user' // flathub is allready available
+user@~ flatpak info 'com.discordapp.Discord' // discord flatpak is already installed
 # install pandoc binary
-user@~ dpkg --status 'pandoc'
-user@~ test -f /tmp/pandoc.deb
-user@~ wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb
-user@~ dpkg --status 'pandoc'
-user@~ sudo dpkg --install '/tmp/pandoc.deb'
-user@~ test -f /tmp/pandoc.deb
-user@~ rm /tmp/pandoc.deb
+user@~ dpkg --status 'pandoc' // pandoc is not installed 
+user@~ test -f /tmp/pandoc.deb // pandoc debain file does not exist
+user@~ wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb // download debain file from url
+user@~ dpkg --status 'pandoc' // pandoc is still not installed
+user@~ sudo dpkg --install '/tmp/pandoc.deb' // install pandoc from debain file
+user@~ test -f /tmp/pandoc.deb // check if debain file exists
+user@~ rm /tmp/pandoc.deb // remove debian file
 ```
+
+We do redundent checks in case the the `dependency` State of `From` already installed the `target` State.
 
 A large example can be found in `./my_ubuntu.py`.
 
