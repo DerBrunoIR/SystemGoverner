@@ -86,7 +86,7 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
 
 - `State` Base class for idempotent state changes on the system
 
-    This interface is the only interface required for **any custom State** class.
+   **Any class** that implements the following interface and semantics can be used by all other utility classes. 
     ```python
     class State(ABC):
         """
