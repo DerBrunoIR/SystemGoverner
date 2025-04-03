@@ -17,14 +17,6 @@ A **State** is any change you could do to a system that fullfills the following 
 - It must be detectable if the state is currently installed or not.
 - It can be uninstalled by performing a sequence of actions.
 
-Examples for States are:
-- installing a programm via apt on Ubuntu
-- creating a file/directory in the filesystem
-
-A counter example would be:
-- Any two changes to the system that can not be distinguished.
-
-
 # Example Usage
 
 `example.py`:
