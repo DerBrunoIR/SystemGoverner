@@ -13,9 +13,9 @@ Additionally there are higher order utility classes for more convenient configur
 # Concepts
 
 A **State** is any change you could do to a system that fullfills the following conditions:
-- It can be installed by performing a sequence of actions.
-- It must be detectable if the state is currently installed or not.
-- It can be uninstalled by performing a sequence of actions.
+- It can be *installed* by performing a sequence of actions.
+- It must be *detectable* if the state is currently installed or not.
+- It can be *uninstalled* by performing a sequence of actions.
 
 # Example Usage
 
