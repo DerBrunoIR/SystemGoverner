@@ -45,7 +45,7 @@ if __name__ == '__main__':
             ),
             # A utility for Dpkg already exists and we use it here as target State.
             # Notice: here we can access the previously downloaded file '/tmp/pandoc.deb'.
-            target=Dpkg('pandoc', '/tmp/pandoc.deb'), # Dpgk always requires root
+            target=Dpkg('pandoc', '/tmp/pandoc.deb'), # installing via dpkg always requires root
         ),
     ).ensure_installed() # finally we call ensure_installed once on the root of the defined tree.
 ```
