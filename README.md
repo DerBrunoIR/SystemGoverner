@@ -17,6 +17,8 @@ A **State** is any change you could do to a system that fullfills the following 
 - It must be *detectable* if the state is currently installed or not.
 - It can be *uninstalled* by performing a sequence of actions.
 
+A **higher order State** is any State that operates on other States.
+
 # Example Usage
 
 `example.py`:
