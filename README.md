@@ -5,11 +5,6 @@ Indempotency means, the library is able to detect if parts of the configuration 
 
 The main feature is the convinience of python as configuration language and the simplicity of the only interface `State`.
 
-# TODO
-
-System configuration is difficult to test without much effort.
-Some time in the future I will probably investigate writing tests.
-Until then, most code is tested only manually by me.
 
 # Example Usage
 
@@ -74,6 +69,12 @@ Higher order utility classes, like `From`, can not know what actions States, lik
 Therfore we are carfull about all assumptions we take about given States and to not currupt any configuration, though resulting from strange configurations, we do multiple checks. 
 
 A large example can be found in `./my_ubuntu.py`.
+
+# TODO
+
+System configuration is difficult to test without much effort.
+Some time in the future I will probably investigate writing tests.
+Until then, most code is tested only manually by me.
 
 # Security
 
