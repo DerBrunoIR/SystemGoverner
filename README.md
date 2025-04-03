@@ -1,4 +1,4 @@
-This project has no stable release yet.
+This project has no stable release yet. Anything may change in the future.
 
 # What
 
