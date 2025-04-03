@@ -76,6 +76,8 @@ System configuration is difficult to test without much effort.
 Some time in the future I will probably investigate writing tests.
 Until then, most code is tested only manually by me.
 
+Package the library.
+
 # Security
 
 The Ubuntu utils are made for trusted input only, since they execute shell commands.
