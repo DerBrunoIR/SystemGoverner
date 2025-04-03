@@ -10,7 +10,7 @@ The main feature is the convinience of python as configuration language and the 
 Additionally there are higher order utility classes for more convenient configuration and some helper classes for Ubuntu systems.
 
 
-# State
+# Concepts
 
 A **State** is any change you could do to a system that fullfills the following conditions:
 - It can be installed by performing a sequence of actions.
