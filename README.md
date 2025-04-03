@@ -61,7 +61,7 @@ A large example can be found in `./my_ubuntu.py`.
 
 The Ubuntu utils are made for trusted input only, since they execute shell commands.
 
-# temporary Documentation
+# Class Overview
 
 - `State` Base class for idempotent state changes on the system
 
