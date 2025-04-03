@@ -113,6 +113,7 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     - `GitClone`: State to clone git repositories
     - `AddAptRepository`: State to add apt repositories
     - `AddFlatpakRemote`: State to add flatpak remotes
+- Helper classes that don't implement the State interface:
     - `Runnable`: Interface for something that can be `run`
     - `Shell`: Class for running shell commands
 
