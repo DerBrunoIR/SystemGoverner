@@ -1,8 +1,8 @@
 # Prototype
 
 This respository contains utils to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using python.
-Those utils are easy to extend and modify for your needs.
-Currently the only targeted platform is `ubuntu`.
+
+The main features is the convinience of using python and the simplicity of the only interface `State`.
 
 # TODO
 
