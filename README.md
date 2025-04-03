@@ -54,7 +54,9 @@ user@~ test -f /tmp/pandoc.deb // check if debain file exists
 user@~ rm /tmp/pandoc.deb // remove debian file
 ```
 
-We do redundent checks in case the the `dependency` State of `From` already installed the `target` State.
+In the example, `From` checks twice if pandoc is indeed installed. 
+Higher order utility classes, like `From`, can not know what actions States, like `dependency` and `target`, actually perform. 
+Therfore we are carfull about all assumptions we take about given States and to not currupt any configuration, resulting from strange configurations, we do multiple checks. 
 
 A large example can be found in `./my_ubuntu.py`.
 
