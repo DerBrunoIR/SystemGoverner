@@ -8,7 +8,7 @@ The main features is the convinience of using python and the simplicity of the o
 
 System configuration is difficult to test without much effort.
 Some time in the future I will probably investigate writing tests.
-Until then, most code is tested manually by me.
+Until then, most code is only tested manually by me.
 
 # Example Usage
 
