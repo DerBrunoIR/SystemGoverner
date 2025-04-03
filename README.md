@@ -90,6 +90,8 @@ Until then, most code is tested only manually by me.
 
 Package the library.
 
+Document ubuntu utilities.
+
 # Security
 
 The Ubuntu utils are made for trusted input only, since they execute shell commands.
