@@ -39,9 +39,7 @@ if __name__ == '__main__':
         ),
     ).ensure_installed()
 ```
-
-colorless command log:
-
+output (missing colors):
 ```plain
 # install discord via flathub (already installed)
 user@~ dpkg --status 'flatpak'
