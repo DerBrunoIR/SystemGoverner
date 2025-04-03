@@ -1,7 +1,7 @@
 # Prototype
 
 This respository contains a library to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using python.
-Indempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those.
+Indempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time after small changes to the configuration dramatically.
 
 The main feature is the convinience of python as configuration language and the simplicity of the only interface `State`.
 
