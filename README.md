@@ -10,6 +10,8 @@ System configuration is difficult to test without much effort.
 Some time in the future I will probably investigate writing tests.
 Until then some things might not work.
 
+Also the libary is currently not packaged.
+
 # Example Usage
 
 `example.py`:
