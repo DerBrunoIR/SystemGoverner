@@ -10,7 +10,7 @@ The main feature is the convinience of python as configuration language and the 
 
 `example.py`:
 ```python
-# to be executed in root dir of the repo, otherwise imports break
+# to be executed in root dir of the repo, otherwise imports break. see section TODO
 from lib import *
 from unix import *
 
