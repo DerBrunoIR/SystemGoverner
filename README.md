@@ -38,20 +38,30 @@ if __name__ == '__main__':
         ),
     ).ensure_installed()
 ```
-Debug output, sadly only displayed without colors here, together with explanations notated as `// annotation`:
+Debug output, sadly only displayed without colors here, together with explanations notated as `// annotation` above the corresponding line:
 ```plain
 # install flatpak, add flathub repository and install discord
-user@~ dpkg --status 'flatpak'  // flatpak is already installed
-user@~ flatpak remotes --columns=name,options | grep 'flathub.*user' // flathub is allready available
-user@~ flatpak info 'com.discordapp.Discord' // discord flatpak is already installed
+// flatpak is already installed
+user@~ dpkg --status 'flatpak'
+// flathub is allready available
+user@~ flatpak remotes --columns=name,options | grep 'flathub.*user'
+// discord flatpak is already installed
+user@~ flatpak info 'com.discordapp.Discord' 
 # install pandoc binary
-user@~ dpkg --status 'pandoc' // pandoc is not installed 
-user@~ test -f /tmp/pandoc.deb // pandoc debain file does not exist
-user@~ wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb // download debain file from url
-user@~ dpkg --status 'pandoc' // pandoc is still not installed
-user@~ sudo dpkg --install '/tmp/pandoc.deb' // install pandoc from debain file
-user@~ test -f /tmp/pandoc.deb // check if debain file exists
-user@~ rm /tmp/pandoc.deb // remove debian file
+// pandoc is not installed 
+user@~ dpkg --status 'pandoc'
+// pandoc debain file does not exist
+user@~ test -f /tmp/pandoc.deb
+// download debain file from url
+user@~ wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb
+// pandoc is still not installed
+user@~ dpkg --status 'pandoc'
+// install pandoc from debain file
+user@~ sudo dpkg --install '/tmp/pandoc.deb'
+// check if debain file exists
+user@~ test -f /tmp/pandoc.deb
+// remove debian file
+user@~ rm /tmp/pandoc.deb
 ```
 
 We do redundent checks in case the the `dependency` State of `From` already installed the `target` State.
