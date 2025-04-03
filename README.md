@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # A Chain contains other States and allows to call methods like ensure_installed on all of them.
     Chain(
         Print("# install flatpak, add flathub repository and install discord"),
-        # This operation can easily configured using a sequence of actions
+        # This operation can be configured using a sequence of actions
         # Chain is not necessary here, but it allows us to group the following States together.
         Chain(
             # Utility class for installing an apt repository.
