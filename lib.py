@@ -9,7 +9,7 @@ class State(ABC):
     @abstractmethod
     def detect(self) -> bool:
         """
-        Returns true if the target state is already installed.
+        Returns true if the target state is already installed false otherwise.
         """
         pass
 
