@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 class State(ABC):
     """
     Abstraction for installing, detecting and uninstalling a target state from the system.
+    Contains also convenience methods.
     """
     @abstractmethod
     def detect(self) -> bool:
