@@ -2,22 +2,22 @@ This project has no stable release yet. Details may change in the future.
 
 # What
 
-This respository contains a library to configure your system in a declarative and [indempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using python.
-Indempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time after small changes dramatically.
+This repository contains a library to configure your system in a declarative and [idempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using Python.
+Idempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time after small changes dramatically.
 
-The main feature is the convinience of python as configuration language and the simplicity of adding custom utility classes.
+The main feature is the convenience of Python as a configuration language and the simplicity of adding custom utility classes.
 
-Additionally there are higher order utility classes for more convenient configuration and some helper classes for Ubuntu systems.
+Additionally, there are higher-order utility classes for more convenient configuration and some helper classes for Ubuntu systems.
 
 
 # Concepts
 
-A **State** is any change you could do to a system that fullfills the following conditions:
+A **State** is any change you could do to a system that fulfills the following conditions:
 - It can be *installed* by performing a sequence of actions.
 - It must be *detectable* if the state is currently installed or not.
 - It can be *uninstalled* by performing a sequence of actions.
 
-A **higher order State** is any State that operates on other States, choosen by the user.
+A **higher-order State** is any State that operates on other States, chosen by the user.
 
 # Example Usage
 
@@ -75,22 +75,22 @@ user@~ test -f /tmp/pandoc.deb // check if debain file exists
 user@~ rm /tmp/pandoc.deb // remove debian file
 ```
 
-In the example, `From` checks twice if pandoc is indeed installed. 
-Higher order utility classes, like `From`, can not know what actions States, like `dependency` and `target`, actually perform. 
+In the example, `From` checks twice if Pandoc is indeed installed. 
+Higher-order utility classes, like `From`, can not know what actions States, like `dependency` and `target`, actually perform. 
 For example a bad custom State could already install the `target` State and installing it twice could corrupt the existing installation.
-Therefore we carfully double check.
+Therefore, we carefully double-check.
 
 A larger and less documented example can be found in `./my_ubuntu.py`.
 
 # TODO
 
 System configuration is difficult to test without writing some kind of mock.
-Some time in the future I will maybe investigate writing tests.
+Some time in the future, I will maybe investigate writing tests.
 Until then, most code is tested only manually by me.
 
 Package the library.
 
-Document ubuntu utilities.
+Document Ubuntu utilities.
 
 # Security
 
@@ -100,7 +100,7 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
 
 - `State` Base class for idempotent state changes on the system
 
-   **Any class** that implements the following interface and semantics can be used by all higher order utitlity classes. 
+   **Any class** that implements the following interface and semantics can be used by all higher order utility classes. 
     ```python
     class State(ABC):
         """
@@ -136,14 +136,14 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     - `Try`: Ignore exceptions from encapsulated state 
     - `Invert`: Swap `install` and `uninstall` method
     - `From`: Temporally install dependency state to install another target state
-    - `Breakpoint`: Enters a breakpoint before accessing encapsulated state
+    - `Breakpoint`: Enters a breakpoint before accessing the encapsulated state.
     - `Print`: just prints a message, has no encapsulated state
 - Classes for **changing Ubuntu systems**:
     - `Command`: A state described by shell commands for installation, uninstallation and detection
     - `Dpkg`: State to install Debian packages from an archive
     - `Apt`: State to install apt packages
     - `Snap`: State to install snap packages
-    - `Flatpak`: State to install flatpak packages 
+    - `Flatpak`: State to install Flatpak packages 
     - `Pip`: State to install pip packages
     - `GitClone`: State to clone git repositories
     - `AddAptRepository`: State to add apt repositories
