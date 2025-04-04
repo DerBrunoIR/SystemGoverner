@@ -26,8 +26,8 @@ A **higher-order State** is any State that operates on other States, chosen by t
 # imports omitted
 
 if __name__ == '__main__':
-    # In this example we store the entire configuration in a single Chain object.
-    # A Chain contains other States and allows to call methods like ensure_installed on all of them.
+    # In this example, we store the entire configuration in a single Chain object.
+    # A Chain contains other States and allows calling methods like ensure_installed on all of them.
     Chain(
         Print("# install flatpak, add flathub repository and install discord"),
         # This operation can be configured using a sequence of actions
@@ -41,23 +41,23 @@ if __name__ == '__main__':
             Flatpak('com.discordapp.Discord'),
         ),
 
-        Print("# download pandoc debain file from github, install pandoc binary using dpkg and finally remove the debain file"),
-        # This operation is quiet complex and we have to compose it.
-        # First we note, that the debain file is removed after installation finished.
+        Print("# download the Pandoc Debian file from GitHub, install Pandoc binary using dpkg, and finally remove the Debian file"),
+        # This operation is quite complex, and we have to compose it.
+        # First, we note, that the Debian file is removed after installation is finished.
         # The utility class From installs a later removed dependency State necessary to install the given target State.
         From(
-            # There is no utility class to download binaries from github, therefore we have to improvise by using the Command State.
-            # The Command State allows us to make shell commands indempotent by defining how install, detect and uninstall it. 
+            # There is no utility class to download binaries from GitHub; therefore, we have to improvise by using the Command State.
+            # The Command State allows us to make shell commands idempotent by defining how to install, detect and uninstall them. 
             dependency=Command(
                 install=Shell('wget https://github.com/jgm/pandoc/releases/download/3.6.1/pandoc-3.6.1-1-amd64.deb -qO /tmp/pandoc.deb'),
                 uninstall=Shell('rm /tmp/pandoc.deb'),
                 detect=Shell('test -f /tmp/pandoc.deb'),
             ),
-            # A utility for global dpkg installations already exists and we use it here as target State.
-            # Notice: here we can access the previously downloaded file '/tmp/pandoc.deb'.
+            # A utility for global dpkg installations already exists, and we use it here as target State.
+            # Notice: Here we can access the previously downloaded file '/tmp/pandoc.deb'.
             target=Dpkg('pandoc', '/tmp/pandoc.deb'), # global installation requires ROOT
         ),
-    ).ensure_installed() # finally we call ensure_installed once on the root of the defined tree.
+    ).ensure_installed() # Finally, we call ensure_installed once on the root of the defined tree.
 ```
 Debug output from me, sadly displayed without colors here, together with explanations notated as `// annotation`:
 ```plain
