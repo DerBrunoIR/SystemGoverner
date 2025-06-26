@@ -135,7 +135,7 @@ The Ubuntu utils are made for trusted input only, since they execute shell comma
     - `Chain`: chain multiple states together
     - `Try`: Ignore exceptions from encapsulated state 
     - `Invert`: Swap `install` and `uninstall` method
-    - `From`: Temporally install dependency state to install another target state
+    - `From`: Temporally install dependency state required for installing the target state
     - `Breakpoint`: Enters a breakpoint before accessing the encapsulated state.
     - `Print`: just prints a message, has no encapsulated state
 - Classes for **changing Ubuntu systems**:
