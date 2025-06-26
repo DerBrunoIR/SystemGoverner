@@ -86,7 +86,7 @@ A larger and less documented example can be found in `./my_ubuntu.py`.
 
 System configuration is difficult to test without writing some kind of mock.
 Some time in the future, I will maybe investigate writing tests.
-Until then, most code is tested only manually by me.
+Until then, code might break.
 
 Package the library.
 
