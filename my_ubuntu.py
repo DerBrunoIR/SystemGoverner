@@ -14,6 +14,7 @@ def main():
                 Apt('firefox'),
                 Apt('autojump'),
                 Apt('i3'),
+                Apt('xorg'),
 
                 Apt('jq'),
                 Apt('git'),
@@ -53,21 +54,6 @@ def main():
                 Flatpak('io.github.Qalculate'),
             ),
 
-            Print("\n# install docker\n"),
-            Chain(
-                Command(
-                    Shell('sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc'),
-                    Shell('sudo rm /etc/apt/keyrings/docker.asc'),
-                    Shell('test -f /etc/apt/keyrings/docker.asc'),
-                    ),
-                AddAptRepository('deb https://download.docker.com/linux/ubuntu focal stable'),
-                Apt('docker-ce'),
-                Apt('docker-ce-cli'),
-                Apt('containerd.io'),
-                Apt('docker-buildx-plugin'),
-                Apt('docker-compose-plugin'),
-            ),
-
             Print("\n# snap packages\n"),
             Chain(
                 Snap('drawio'),
@@ -75,16 +61,19 @@ def main():
 
             Print("\n# setup python env\n"),
             Chain(
-                    Apt('python3-pip'),
-                    Apt('python3.12'),
-                    Apt('python3.12-venv'),
-                    Pip('ipython'),
-                    Pip('ipdb'),
-                    Pip('grip'),
-                    Pip('docker'),
-                    Pip('neovim'),
-                    Pip('numpy'),
-                    Pip('pandas'),
+                    #AddAptRepository('ppa:deadsnakes/ppa'),
+                    #Apt('python3-pip'),
+                    #Apt('python3.12'),
+                    #Apt('python3.12-venv'),
+                    #Apt('python3-full'),
+                    Pip('setuptools', break_system_packages=True),
+                    Pip('ipython', break_system_packages=True),
+                    Pip('ipdb', break_system_packages=True),
+                    Pip('grip', break_system_packages=True),
+                    Pip('docker', break_system_packages=True),
+                    Pip('neovim', break_system_packages=True),
+                    Pip('numpy', break_system_packages=True),
+                    Pip('pandas', break_system_packages=True),
                     ),
 
             Print("\n# setup nvim\n"),
@@ -121,7 +110,7 @@ def main():
             Print("\n# install golang\n"),
             Chain(
                 Command(
-                    Shell('wget -qO- https://go.dev/dl/go1.20.1.linux-amd64.tar.gz | sudo tar xzf- -C /usr/local '),
+                    Shell('wget -qO- https://go.dev/dl/go1.20.1.linux-amd64.tar.gz | sudo tar xzf - -C /usr/local '),
                     Shell('sudo rm -rf /usr/local/go'),
                     Shell('test -d /usr/local/go'),
                     ),
@@ -130,7 +119,7 @@ def main():
             Print("\n# ohmyzsh\n"),
             Chain(
                 Command(
-                    Shell("sh -c $(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"),
+                    Shell('sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)'),
                     Shell("yes | uninstall_oh_my_zsh"),
                     Shell("test -d ~/.oh-my-zsh"),
                 ),
@@ -141,7 +130,7 @@ def main():
                 Print("\n## install starship\n"),
                 From(
                     Command(
-                        Shell("wget https://starship.rs/install.sh -O /tmp/install.sh && chmod u+x /tmp/starship_install.sh"),
+                        Shell("wget https://starship.rs/install.sh -O /tmp/starship_install.sh && chmod u+x /tmp/starship_install.sh"),
                         Shell("rm /tmp/starship_install.sh"),
                         Shell("test -f /tmp/starship_install.sh"),
                     ), 
@@ -153,7 +142,7 @@ def main():
                 ),
                 Print("\n## load starship config\n"),
                 Command(
-                    Shell('wgeth ttps://starship.rs/presets/toml/nerd-font-symbols.toml -o ~/.config/starship.toml'),
+                    Shell('wget https://starship.rs/presets/toml/nerd-font-symbols.toml -O ~/.config/starship.toml'),
                     Shell('rm ~/.config/starship.toml'),
                     Shell('test -f ~/.config/starship.toml'),
                 ),
@@ -163,8 +152,8 @@ def main():
             Chain(
                 From(
                     Command(
-                        Shell("wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip -qO /tmp/JetrBrainsMono"),
-                        Shell("rm /tmp/JetrBrainsMono.zip"),
+                        Shell("wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip -qO /tmp/JetBrainsMono.zip"),
+                        Shell("rm /tmp/JetBrainsMono.zip"),
                         Shell("test -f /tmp/JetBrainsMono.zip"),
                     ),
                     Command(

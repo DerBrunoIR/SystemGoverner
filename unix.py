@@ -154,7 +154,12 @@ class Apt(State):
         self.package = package
 
     def install(self):
-        r = Shell(f"apt install '{self.package}'").run(sudo=True)
+        r = Shell(f"apt install -y '{self.package}'").run(sudo=True)
+        if r.returncode == 0:
+            return
+        # try again with `apt update`
+        assert Shell(f"sudo apt update -y").run(sudo=True).returncode == 0
+        r = Shell(f"apt install -y '{self.package}'").run(sudo=True)
         if r.returncode == 0:
             return
         raise Exception(f"failed to install '{self.package}'. \nstderr: {r.stderr.decode()}")
@@ -197,28 +202,29 @@ class Snap(State):
         
 
 class Flatpak(State):
-    def __init__(self, package: str, system: bool = False):
+    def __init__(self, package: str, system: bool = False, remote='flathub'):
         """
         package: name of flatpak package
         system: install package for entire system instead of only for current user
         """
         self.package = package
+        self.remote = remote
         self.system = '--system' if system else '--user'
 
     def install(self):
-        r = Shell(f"flatpak install '{self.package}' -y {self.system}").run()
+        r = Shell(f"flatpak install -y {self.system} {self.remote} '{self.package}'").run()
         if r.returncode == 0:
             return
         raise Exception(f"failed to install '{self.package}'. \nstderr: {r.stderr.decode()}")
 
     def uninstall(self):
-        r = Shell(f"flatpak uninstall '{self.package}' -y").run()
+        r = Shell(f"flatpak uninstall -y '{self.package}'").run()
         if r.returncode == 0:
             return
         raise Exception(f"failed to uninstall '{self.package}'. \nstderr: {r.stderr.decode()}")
 
     def detect(self) -> bool:
-        r = Shell(f"flatpak info '{self.package}'").run()
+        r = Shell(f"flatpak info {self.system} '{self.package}'").run()
         return r.returncode == 0
 
 
@@ -231,12 +237,12 @@ class AddAptRepository(State):
 
     def install(self):
         # add ppa
-        r = Shell(f"add-apt-repository '{self.ppa}' -y").run(sudo=True)
+        r = Shell(f"add-apt-repository -y '{self.ppa}'").run(sudo=True)
         if r.returncode != 0:
             raise Exception(f"failed to add repository '{self.ppa}'. \nstderr: {r.stderr.decode()}")
 
     def uninstall(self):
-        r = Shell(f"add-apt-repository --remove '{self.ppa}' -y").run(sudo=True)
+        r = Shell(f"add-apt-repository --remove -y '{self.ppa}'").run(sudo=True)
         if r.returncode == 0:
             return
         raise Exception(f"failed to remove repository '{self.ppa}'. \nstderr: {r.stderr.decode()}")
@@ -255,7 +261,15 @@ class AddFlatpakRemote(State):
         self.system = 'system' if system else 'user'
 
     def install(self):
-        r = Shell(f"sudo flatpak remote-add '{self.name}' '{self.url}'").run()
+        r = None
+        match self.system:
+            case 'system':
+                r = Shell(f"sudo flatpak remote-add --system '{self.name}' '{self.url}'").run()
+            case 'user':
+                r = Shell(f"flatpak remote-add --user '{self.name}' '{self.url}'").run()
+            case _:
+                raise Exception(f'Unkown system flag "{self.system}"')
+                
         if r.returncode != 0:
             raise Exception(f"failed to install repository '{self.url}'. \nstderr: {r.stderr.decode()}")
         return
@@ -269,18 +283,19 @@ class AddFlatpakRemote(State):
 
 
     def detect(self) -> bool:
-        r = Shell("flatpak remotes --columns=name,options").pipe(f"grep '{self.name}.*{self.system}'").run()
+        r = Shell("flatpak remotes --columns=name,options").pipe(f"grep \"{self.name}.*{self.system}\"").run()
         output = r.stdout.decode()
         num_lines = output.count('\n')
         return num_lines > 0
 
 
 class Pip(State):
-    def __init__(self, name: str):
+    def __init__(self, name: str, break_system_packages: bool = False):
         self.name = name
+        self.flags = '--break-system-packages' if break_system_packages else ''
 
     def install(self):
-        r = Shell(f"pip install '{self.name}'").run()
+        r = Shell(f"pip install {self.flags} '{self.name}'").run()
         if r.returncode != 0:
             raise Exception(f"failed to install repository '{self.name}'. \nstderr: {r.stderr.decode()}")
         return
@@ -310,7 +325,8 @@ class GitClone(State):
         self.path = path
 
     def install(self):
-        r = Shell(f"git clone --depth 1 '{self.url}' '{self.path}'").run()
+        assert Shell(f"mkdir -p {self.path}").run().returncode == 0
+        r = Shell(f"yes | git clone --depth 1 '{self.url}' '{self.path}'").run()
         assert r.returncode == 0, f"failed to clone repository '{self.url}' to '{self.path}'.\n{r.stderr.decode()}"
 
     def uninstall(self):
