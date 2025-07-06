@@ -10,7 +10,7 @@ This library differentiates itself from ansible with two features:
 - Python instead of YAML is used for configuration, allowing more flexibility in those configurations.
 - A simple Interface can be used for defining and composing states.
 
-Additionally, there are some higher-order utility classes for more convenient configuration and some helper classes for Ubuntu systems, which are untested.
+Additionally, there are some higher-order utility classes for more convenient configuration and some untested States for Ubuntu systems.
 
 
 # Concepts
