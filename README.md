@@ -58,6 +58,7 @@ if __name__ == '__main__':
             ),
             # A utility for global dpkg installations already exists, and we use it here as target State.
             # Notice: Here we can access the previously downloaded file '/tmp/pandoc.deb'.
+            # For simplicity we skip all signature checks.
             target=Dpkg('pandoc', '/tmp/pandoc.deb'), # global installation requires ROOT
             # After target is installed '/tmp/pandoc.deb' will be deleted.
         ),
