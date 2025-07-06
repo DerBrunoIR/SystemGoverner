@@ -8,7 +8,7 @@ Idempotency means, the library is able to detect if parts of the configuration a
 
 This library differentiates itself from the well known library and tool ansible in two ways:
 - Python instead of YAML is used for configuration, allowing more flexibility in configurations.
-- A simple Interface can be used for defining and composing states.
+- A simple Interface can be used for the definition and composition of states.
 
 Additionally, there are some higher-order utility classes for more convenient configuration and some untested States for Ubuntu systems.
 
