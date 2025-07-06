@@ -1,4 +1,4 @@
-> [!Warning]
+> [!Caution]
 > This project has no stable release and only some functionality is manually tested.
 
 # What
