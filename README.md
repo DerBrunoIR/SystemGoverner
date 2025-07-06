@@ -3,7 +3,7 @@ This project has no stable release yet. Things may change in the future.
 # What
 
 This repository contains a library to configure your system in a declarative and [idempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using Python.
-Idempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time after small changes dramatically.
+Idempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time for small changes dramatically.
 
 The main feature is the convenience of Python as a configuration language and the simplicity of adding custom utility classes.
 
