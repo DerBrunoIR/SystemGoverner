@@ -7,7 +7,7 @@ We are proposing a library to configure your system in a declarative and [idempo
 Idempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time for small changes dramatically.
 
 This library differentiates itself from the well known library and tool ansible in two ways:
-- Python instead of YAML is used for configuration, allowing more flexibility in those configurations.
+- Python instead of YAML is used for configuration, allowing more flexibility in configurations.
 - A simple Interface can be used for defining and composing states.
 
 Additionally, there are some higher-order utility classes for more convenient configuration and some untested States for Ubuntu systems.
