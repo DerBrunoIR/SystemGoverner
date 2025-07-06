@@ -4,9 +4,9 @@
 # What
 
 We are proposing a library to configure your system in a declarative and [idempotent](https://en.wikipedia.org/wiki/Idempotence) fashion using Python.
-Idempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time for small changes dramatically (similar to known projects like ansible).
+Idempotency means, the library is able to detect if parts of the configuration are already installed or already uninstalled and is therefore able to skip those, reducing running time for small changes dramatically.
 
-This library differentiates itself from ansible with two features:
+This library differentiates itself from the well known library and tool ansible in two ways:
 - Python instead of YAML is used for configuration, allowing more flexibility in those configurations.
 - A simple Interface can be used for defining and composing states.
 
