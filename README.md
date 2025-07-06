@@ -1,5 +1,5 @@
 > [!Warning]
-> This project has no stable release yet and is untested. Things may change in the future.
+> This project has no stable release yet and is not fully tested.
 
 # What
 
